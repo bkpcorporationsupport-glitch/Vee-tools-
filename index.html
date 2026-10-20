@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BKP MultiTool</title>
+
+<style>
+:root {
+    --pink: #f04f9b;
+    --pink-dark: #d93683;
+    --pink-light: #fff0f7;
+    --bg: #fffafd;
+    --card: #ffffff;
+    --text: #29232b;
+    --muted: #827782;
+    --border: #f1dce8;
+    --shadow: 0 8px 28px rgba(200, 70, 135, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 18px 7%;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--pink-light);
+    flex-shrink: 0;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.nome {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+}
+
+.nome span {
+    color: var(--pink);
+}
+
+.hero {
+    text-align: center;
+    padding: 48px 20px 25px;
+}
+
+.hero h1 {
+    font-size: clamp(30px, 5vw, 44px);
+    margin: 0 0 12px;
+    letter-spacing: -1.5px;
+}
+
+.hero h1 span {
+    color: var(--pink);
+}
+
+.hero p {
+    color: var(--muted);
+    margin: 0 auto;
+    max-width: 600px;
+    line-height: 1.7;
+}
+
+.search {
+    display: block;
+    width: min(520px, 90%);
+    margin: 25px auto 35px;
+    padding: 15px 18px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    outline: none;
+    font-size: 15px;
+    background: white;
+    transition: 0.2s;
+}
+
+.search:focus {
+    border-color: var(--pink);
+    box-shadow: 0 0 0 4px rgba(240, 79, 155, 0.1);
+}
+
+.container {
+    width: min(1100px, 90%);
+    margin: auto;
+    padding-bottom: 55px;
+}
+
+.section-title {
+    font-size: 20px;
+    margin: 0 0 18px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
+    gap: 20px;
+}
+
+.tool {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 19px;
+    padding: 23px;
+    box-shadow: var(--shadow);
+    min-width: 0;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.tool:hover {
+    transform: translateY(-3px);
+    border-color: #f3a5cb;
+}
+
+.tool-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: var(--pink-light);
+    border-radius: 13px;
+    font-size: 23px;
+    margin-bottom: 14px;
+}
+
+.tool h3 {
+    margin: 0 0 7px;
+    font-size: 18px;
+}
+
+.tool p {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0 0 17px;
+    line-height: 1.6;
+}
+
+textarea,
+input,
+select {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: #fffafd;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    margin-bottom: 10px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 95px;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+    border-color: var(--pink);
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    background: var(--pink);
+    color: white;
+    padding: 11px 15px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    margin: 3px 3px 3px 0;
+}
+
+button:hover {
+    background: var(--pink-dark);
+    transform: translateY(-1px);
+}
+
+button.secondary {
+    background: var(--pink-light);
+    color: var(--pink-dark);
+}
+
+button.secondary:hover {
+    background: #ffe0ef;
+}
+
+.result {
+    margin-top: 12px;
+    padding: 12px;
+    background: var(--pink-light);
+    border-radius: 10px;
+    min-height: 42px;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    font-size: 14px;
+}
+
+.color-preview {
+    height: 55px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+    background: #f04f9b;
+}
+
+.hidden {
+    display: none !important;
+}
+
+footer {
+    text-align: center;
+    padding: 28px 15px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+    background: white;
+}
+
+footer span {
+    color: var(--pink);
+    font-weight: 700;
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 14px 5%;
+    }
+
+    .hero {
+        padding-top: 35px;
+    }
+
+    .tool {
+        padding: 19px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGcc6c0RpdPoIMHGRhns_yh79hT63KpPp2os-qC8P4mw&s"
+            alt="Logo BKP MultiTool"
+        >
+    </div>
+    <div class="nome">Vee <span>MultiTool</span></div>
+</header>
+
+<section class="hero">
+    <h1>Suas ferramentas, <span>em um só lugar.</span></h1>
+    <p>Ferramentas simples, rápidas e gratuitas para facilitar suas tarefas do dia a dia.</p>
+</section>
+
+<input
+    type="search"
+    class="search"
+    id="search"
+    placeholder="🔎 Procurar uma ferramenta..."
+    aria-label="Procurar uma ferramenta"
+>
+
+<main class="container">
+    <h2 class="section-title">Todas as ferramentas</h2>
+
+    <div class="grid" id="tools">
+
+        <!-- CONTADOR DE TEXTO -->
+        <section class="tool" data-name="contador de texto palavras caracteres">
+            <div class="tool-icon">📝</div>
+            <h3>Contador de texto</h3>
+            <p>Conte caracteres, palavras e linhas.</p>
+            <textarea id="textCount" placeholder="Digite ou cole seu texto..."></textarea>
+            <div class="result" id="countResult">Caracteres: 0
+Palavras: 0
+Linhas: 0</div>
+            <button class="secondary" onclick="clearTextCount()">Limpar</button>
+        </section>
+
+        <!-- CALCULADORA -->
+        <section class="tool" data-name="calculadora matemática conta">
+            <div class="tool-icon">🧮</div>
+            <h3>Calculadora</h3>
+            <p>Faça cálculos matemáticos simples.</p>
+            <input id="calcInput" type="text" inputmode="decimal" placeholder="Ex.: (10 + 5) * 2">
+            <button onclick="calculate()">Calcular</button>
+            <button class="secondary" onclick="clearCalc()">Limpar</button>
+            <div class="result" id="calcResult">O resultado aparecerá aqui.</div>
+        </section>
+
+        <!-- GERADOR DE SENHA -->
+        <section class="tool" data-name="gerador de senha password segurança">
+            <div class="tool-icon">🔐</div>
+            <h3>Gerador de senhas</h3>
+            <p>Gere uma senha aleatória personalizada.</p>
+            <label for="passLength">Tamanho da senha:</label>
+            <input id="passLength" type="number" min="8" max="64" value="16">
+            <label><input id="passNumbers" type="checkbox" checked style="width:auto"> Incluir números</label>
+            <label><input id="passSymbols" type="checkbox" checked style="width:auto"> Incluir símbolos</label>
+            <div>
+                <button onclick="generatePassword()">Gerar senha</button>
+                <button class="secondary" onclick="copyElement('passResult')">Copiar</button>
+            </div>
+            <div class="result" id="passResult">Sua senha aparecerá aqui.</div>
+        </section>
+
+        <!-- CONVERSOR DE CORES -->
+        <section class="tool" data-name="conversor de cores hexadecimal rgb">
+            <div class="tool-icon">🎨</div>
+            <h3>Conversor de cores</h3>
+            <p>Converta uma cor hexadecimal para RGB.</p>
+            <input id="colorInput" type="text" value="#F04F9B" placeholder="#F04F9B">
+            <div class="color-preview" id="colorPreview"></div>
+            <button onclick="convertColor()">Converter cor</button>
+            <div class="result" id="colorResult">HEX: #F04F9B
+RGB: 240, 79, 155</div>
+        </section>
+
+        <!-- FORMATADOR JSON -->
+        <section class="tool" data-name="formatador json código programar formatar">
+            <div class="tool-icon">💻</div>
+            <h3>Formatador JSON</h3>
+            <p>Organize e valide seu código JSON.</p>
+            <textarea id="jsonInput" placeholder='{"nome":"BKP","ativo":true}'></textarea>
+            <button onclick="formatJSON()">Formatar JSON</button>
+            <button class="secondary" onclick="clearJSON()">Limpar</button>
+            <div class="result" id="jsonResult">O resultado aparecerá aqui.</div>
+            <button class="secondary" onclick="copyElement('jsonResult')">Copiar resultado</button>
+        </section>
+
+        <!-- MAIÚSCULAS E MINÚSCULAS -->
+        <section class="tool" data-name="maiúsculas minúsculas converter texto letras">
+            <div class="tool-icon">🔠</div>
+            <h3>Maiúsculas e minúsculas</h3>
+            <p>Altere as letras do seu texto rapidamente.</p>
+            <textarea id="caseInput" placeholder="Digite seu texto..."></textarea>
+            <button onclick="changeCase('upper')">MAIÚSCULAS</button>
+            <button onclick="changeCase('lower')">minúsculas</button>
+            <button class="secondary" onclick="changeCase('title')">Primeira Letra</button>
+            <div class="result" id="caseResult">Seu texto aparecerá aqui.</div>
+            <button class="secondary" onclick="copyElement('caseResult')">Copiar resultado</button>
+        </section>
+
+        <!-- CÓDIGO MORSE -->
+        <section class="tool" data-name="código morse tradutor texto pontos traços">
+            <div class="tool-icon">📡</div>
+            <h3>Conversor de Código Morse</h3>
+            <p>Converta texto em Morse ou Morse em texto. Separe letras por espaços e palavras por /.</p>
+            <textarea id="morseInput" placeholder="Digite um texto ou Morse..."></textarea>
+            <button onclick="textToMorse()">Texto → Morse</button>
+            <button onclick="morseToText()">Morse → Texto</button>
+            <button class="secondary" onclick="clearMorse()">Limpar</button>
+            <div class="result" id="morseResult">O resultado aparecerá aqui.</div>
+            <button class="secondary" onclick="copyElement('morseResult')">Copiar resultado</button>
+        </section>
+
+    </div>
+</main>
+
+<footer>
+    Feito com <span>♥</span> por BKP MultiTool
+    <br><br>
+    Ferramentas gratuitas para facilitar seu dia.
+</footer>
+
+<script>
+"use strict";
+
+/* PESQUISA DE FERRAMENTAS */
+document.getElementById("search").addEventListener("input", function () {
+    const query = this.value.toLocaleLowerCase("pt-BR").trim();
+
+    document.querySelectorAll(".tool").forEach(function (tool) {
+        const name = (tool.dataset.name || "").toLocaleLowerCase("pt-BR");
+        const title = tool.querySelector("h3").textContent.toLocaleLowerCase("pt-BR");
+        tool.classList.toggle("hidden", !name.includes(query) && !title.includes(query));
+    });
+});
+
+/* CONTADOR DE TEXTO */
+document.getElementById("textCount").addEventListener("input", updateTextCount);
+
+function updateTextCount() {
+    const text = document.getElementById("textCount").value;
+    const words = text.trim() ? text.trim().split(/\s+/u).length : 0;
+    const lines = text.length ? text.split(/\r\n|\r|\n/).length : 0;
+
+    document.getElementById("countResult").textContent =
+        "Caracteres: " + text.length +
+        "\nPalavras: " + words +
+        "\nLinhas: " + lines;
+}
+
+function clearTextCount() {
+    document.getElementById("textCount").value = "";
+    updateTextCount();
+}
+
+/* CALCULADORA */
+function calculate() {
+    const input = document.getElementById("calcInput").value.trim();
+    const output = document.getElementById("calcResult");
+
+    if (!input) {
+        output.textContent = "Digite uma conta primeiro.";
+        return;
+    }
+
+    if (!/^[0-9+\-*/().%\s]+$/.test(input)) {
+        output.textContent = "Expressão inválida. Use apenas números e operadores matemáticos.";
+        return;
+    }
+
+    try {
+        const result = Function('"use strict"; return (' + input + ')')();
+
+        if (typeof result !== "number" || !Number.isFinite(result)) {
+            throw new Error("Resultado inválido");
+        }
+
+        output.textContent = "Resultado: " + result;
+    } catch {
+        output.textContent = "Não foi possível calcular. Verifique a expressão.";
+    }
+}
+
+function clearCalc() {
+    document.getElementById("calcInput").value = "";
+    document.getElementById("calcResult").textContent = "O resultado aparecerá aqui.";
+}
+
+/* GERADOR DE SENHAS */
+function generatePassword() {
+    let length = Number.parseInt(document.getElementById("passLength").value, 10);
+
+    if (!Number.isFinite(length)) length = 16;
+    length = Math.max(8, Math.min(64, length));
+
+    document.getElementById("passLength").value = length;
+
+    let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    if (document.getElementById("passNumbers").checked) {
+        chars += "0123456789";
+    }
+
+    if (document.getElementById("passSymbols").checked) {
+        chars += "!@#$%&*_-+=";
+    }
+
+    const random = new Uint32Array(length);
+    crypto.getRandomValues(random);
+
+    let password = "";
+
+    for (let i = 0; i < length; i++) {
+        password += chars[random[i] % chars.length];
+    }
+
+    document.getElementById("passResult").textContent = password;
+}
+
+/* CONVERSOR DE CORES */
+function convertColor() {
+    let hex = document.getElementById("colorInput").value.trim().replace(/^#/, "");
+
+    if (/^[0-9a-fA-F]{3}$/.test(hex)) {
+        hex = hex.split("").map(function (c) { return c + c; }).join("");
+    }
+
+    const output = document.getElementById("colorResult");
+    const preview = document.getElementById("colorPreview");
+
+    if (!/^[0-9a-fA-F]{6}$/.test(hex)) {
+        output.textContent = "Cor inválida. Use o formato #RRGGBB.";
+        preview.style.background = "transparent";
+        return;
+    }
+
+    hex = hex.toUpperCase();
+
+    const r = Number.parseInt(hex.slice(0, 2), 16);
+    const g = Number.parseInt(hex.slice(2, 4), 16);
+    const b = Number.parseInt(hex.slice(4, 6), 16);
+
+    preview.style.background = "#" + hex;
+    output.textContent = "HEX: #" + hex + "\nRGB: " + r + ", " + g + ", " + b;
+}
+
+document.getElementById("colorInput").addEventListener("input", function () {
+    const hex = this.value.trim();
+
+    if (/^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hex)) {
+        convertColor();
+    }
+});
+
+/* FORMATADOR JSON */
+function formatJSON() {
+    const input = document.getElementById("jsonInput").value;
+    const output = document.getElementById("jsonResult");
+
+    try {
+        const parsed = JSON.parse(input);
+        output.textContent = JSON.stringify(parsed, null, 4);
+    } catch (error) {
+        output.textContent = "JSON inválido: " + error.message;
+    }
+}
+
+function clearJSON() {
+    document.getElementById("jsonInput").value = "";
+    document.getElementById("jsonResult").textContent = "O resultado aparecerá aqui.";
+}
+
+/* MAIÚSCULAS E MINÚSCULAS */
+function changeCase(type) {
+    const text = document.getElementById("caseInput").value;
+    let result = text;
+
+    if (type === "upper") {
+        result = text.toLocaleUpperCase("pt-BR");
+    } else if (type === "lower") {
+        result = text.toLocaleLowerCase("pt-BR");
+    } else if (type === "title") {
+        result = text.toLocaleLowerCase("pt-BR").replace(
+            /(^|[\s.!?;:])(\p{L})/gu,
+            function (_, separator, letter) {
+                return separator + letter.toLocaleUpperCase("pt-BR");
+            }
+        );
+    }
+
+    document.getElementById("caseResult").textContent = result || "Digite um texto primeiro.";
+}
+
+/* CÓDIGO MORSE INTERNACIONAL */
+const morseAlphabet = {
+    "A": ".-",    "B": "-...",  "C": "-.-.",  "D": "-..",
+    "E": ".",     "F": "..-.",  "G": "--.",   "H": "....",
+    "I": "..",    "J": ".---",  "K": "-.-",   "L": ".-..",
+    "M": "--",    "N": "-.",    "O": "---",   "P": ".--.",
+    "Q": "--.-",  "R": ".-.",   "S": "...",   "T": "-",
+    "U": "..-",   "V": "...-",  "W": ".--",   "X": "-..-",
+    "Y": "-.--",  "Z": "--..",
+    "0": "-----", "1": ".----", "2": "..---", "3": "...--",
+    "4": "....-", "5": ".....", "6": "-....", "7": "--...",
+    "8": "---..", "9": "----.",
+    ".": ".-.-.-", ",": "--..--", "?": "..--..",
+    "'": ".----.", "!": "-.-.--", "/": "-..-.",
+    "(": "-.--.", ")": "-.--.-", "&": ".-...",
+    ":": "---...", ";": "-.-.-.", "=": "-...-",
+    "+": ".-.-.", "-": "-....-", "_": "..--.-",
+    "\"": ".-..-.", "$": "...-..-", "@": ".--.-."
+};
+
+const reverseMorse = Object.fromEntries(
+    Object.entries(morseAlphabet).map(function ([letter, code]) {
+        return [code, letter];
+    })
+);
+
+function textToMorse() {
+    const text = document.getElementById("morseInput").value;
+    const output = document.getElementById("morseResult");
+
+    if (!text.trim()) {
+        output.textContent = "Digite um texto primeiro.";
+        return;
+    }
+
+    const words = text.toLocaleUpperCase("pt-BR").normalize("NFD").replace(
+        /[\u0300-\u036f]/g, ""
+    ).split(/\s+/u);
+
+    const result = words.map(function (word) {
+        return Array.from(word).map(function (letter) {
+            return morseAlphabet[letter] || (letter === " " ? "" : "?");
+        }).join(" ");
+    }).join(" / ");
+
+    output.textContent = result;
+}
+
+function morseToText() {
+    const input = document.getElementById("morseInput").value.trim();
+    const output = document.getElementById("morseResult");
+
+    if (!input) {
+        output.textContent = "Digite o Código Morse primeiro.";
+        return;
+    }
+
+    const words = input.split(/\s*\/\s*/);
+
+    const decoded = words.map(function (word) {
+        if (!word.trim()) return "";
+
+        return word.trim().split(/\s+/).map(function (code) {
+            return reverseMorse[code] || "?";
+        }).join("");
+    }).join(" ");
+
+    output.textContent = decoded;
+}
+
+function clearMorse() {
+    document.getElementById("morseInput").value = "";
+    document.getElementById("morseResult").textContent = "O resultado aparecerá aqui.";
+}
+
+/* COPIAR RESULTADOS */
+async function copyElement(id) {
+    const element = document.getElementById(id);
+    const text = element.textContent.trim();
+
+    if (!text || text.includes("aparecerá aqui")) {
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(text);
+        const original = element.textContent;
+        element.textContent = "Copiado com sucesso!";
+
+        setTimeout(function () {
+            element.textContent = original;
+        }, 1200);
+    } catch {
+        const selection = window.getSelection();
+        const range = document.createRange();
+
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        element.focus();
+        element.dataset.copyFallback = "Selecione e copie o texto manualmente.";
+    }
+}
+
+/* INICIALIZAÇÃO */
+convertColor();
+updateTextCount();
+</script>
+
+</body>
+</html>
